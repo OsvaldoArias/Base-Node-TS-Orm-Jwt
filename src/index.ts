@@ -10,7 +10,7 @@ const upload = multer()
 import routes from './app/example/example.routes'
 const app = express()
 createConnection()
-  .then(async (connection) => {
+  .then(async () => {
     // create express app
     const app = express()
     // middlewares
