@@ -1,25 +1,23 @@
-import express from './app/example/node_modules/express'
+import express from 'express'
 import cors from 'cors'
-import { createConnection } from './app/example/node_modules/typeorm'
+import { createConnection } from 'typeorm'
 import { pagination } from 'typeorm-pagination'
 import 'reflect-metadata'
-import multer from 'multer'
-const upload = multer()
-
+const port = process.env.PORT || 4000
 // import routes
-import routes from './app/example/example.routes'
-const app = express()
+import apiRouter from './routes/api.routes'
 createConnection()
   .then(async () => {
     // create express app
     const app = express()
-    // middlewares
+    // middleware
+    app.use(express.static('public'))
     app.use(cors())
     app.use(express.json())
     app.use(pagination)
     // routes
-    app.use('/api/init', upload.none(), routes)
-    app.listen(4000)
-    console.log('Express server has started on port 4000')
+    app.use('/api', apiRouter)
+    app.listen(port)
+    console.log(`Express server has started on port ${port}`)
   })
   .catch((error) => console.log(error))
